@@ -30,4 +30,4 @@ jobs:
       env:
         DO_API_KEY: ${{ secrets.DO_API_KEY }}
       run: |
-        ansible-playbook -i wordpress-nginx/site.yml
+        ansible-playbook -i wordpress-nginx/hosts -l wordpress-server wordpress-nginx/site.yml
