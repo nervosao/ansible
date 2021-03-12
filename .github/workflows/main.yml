@@ -23,12 +23,12 @@ jobs:
         DO_SSH_KEY: ${{ secrets.DO_SSH_KEY }}
         SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
         SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
-        SSH_KEY_PATH: ${{ github.workspace }}/../private.key
+        SSH_KEY_PATH: ${{ github.workspace }}/.ssh/private.key
       run: |
         echo "$ANSIBLE_VAULT_PASSWORD" > .ansible-vault-password
         mkdir -p ~/.ssh/
-        echo "$SSH_PRIVATE_KEY" > ../private.key
-        sudo chmod 600 ../private.key
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/private.key
+        sudo chmod 600 ~/.ssh/private.key
     - name: run exporters playbook
       env:
         DO_API_KEY: ${{ secrets.DO_API_KEY }}
