@@ -21,14 +21,17 @@ jobs:
       env:
         ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
         DO_SSH_KEY: ${{ secrets.DO_SSH_KEY }}
+        SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+        SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
+        SSH_KEY_PATH: ${{ github.workspace }}/../private.key
       run: |
         echo "$ANSIBLE_VAULT_PASSWORD" > .ansible-vault-password
-        mkdir .ssh
-        echo "$DO_SSH_KEY" > .ssh/id_digitalocean
-        chmod 600 .ssh/id_digitalocean
+        mkdir -p ~/.ssh/
+        echo "$SSH_PRIVATE_KEY" > ../private.key
+        sudo chmod 600 ../private.key
     - name: run exporters playbook
       env:
         DO_API_KEY: ${{ secrets.DO_API_KEY }}
       run: |
-        ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook  --private-key .ssh/id_digitalocean -i wordpress-nginx/hosts -l wordpress-server wordpress-nginx/site.yml
+        ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook  --private-key .ssh/private.key -i wordpress-nginx/hosts -l wordpress-server wordpress-nginx/site.yml
        # ansible-playbook -i wordpress-nginx/hosts -l wordpress-server wordpress-nginx/site.yml
